@@ -35,7 +35,6 @@ def WeightedEdge_Create(datadict):
                         weight+=2
                     else:
                         weight+=1
-            if weight > 0:
                 final_lst.append((person, neighbor, weight))
 
     return final_lst
