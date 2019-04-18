@@ -41,6 +41,25 @@ def WeightedEdge_Create(datadict):
 
     return final_lst
 
+def addNodes(G, nodes):
+    for item in nodes:
+        G.update({item : []})
+    return
+
+
+def addEdges(G, edges, directed=False):
+    for i in range(len(edges)):
+        for key in G.keys():
+            if key == edges[i][0]:
+                if not directed:
+                    G[key] += (edges[i][1:],)
+                    G[edges[i][1]] += (edges[i][:1]+edges[i][2:],)
+                    break
+                else:
+                    G[key] += (edges[i][ 1:],)
+                    break
+    return
+
 G = {'A':{1: True, 2:True, 5: False},
 'B':{2:False, 1: False, 5:False}
 }
