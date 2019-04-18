@@ -14,28 +14,27 @@ def openbookfile(name):
         bookdict={}
         for x in F:     #Used to create a dictionary of desired format.
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
-     return bookdict
+    return bookdict
 
     
 def WeightedEdge_Create(datadict):
     final_lst=[]
+    alrdy_traversed = [] 
     for person in datadict.keys():
-        alrdy_traversed = True 
+        alrdy_traversed.append(person)
         books_read=datadict[person]
         for neighbor in datadict.keys():
             weight=0
-            if person==neighbor:
-                alrdy_traversed = False
+            if neighbor in alrdy_traversed:
                 continue
-            if alrdy_traversed: continue
             for n_books in datadict[neighbor].keys():
                 if n_books in books_read.keys():
                     currentchoice=books_read[n_books]
                     neighborchoice=datadict[neighbor][n_books]
                     if currentchoice==neighborchoice:
-                        weight+=1
+                        weight+=2
                     else:
-                        weight-=1
+                        weight+=1
             if weight > 0:
                 final_lst.append((person, neighbor, weight))
 
