@@ -16,11 +16,13 @@ def openbookfile(name):
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
     return bookdict
 ##print(openbookfile(bookfilename))
+
 def addNodes(G, nodes):
     for item in nodes:
         G.update({item : []})
     return
-Userdata='Userdata.csv'
+
+
 def userdataload(name):
     import csv
     with open(name) as csv_file:
@@ -42,8 +44,9 @@ def userdataload(name):
                     final[M[0]]=eval(o)
             bookdict2[x[0]]=final
         return bookdict2
-c=userdataload(Userdata)
 
+datafile='Userdata.csv'
+user_data=userdataload(datafile)
 
 
 def addEdges(G, edges, directed=False):
@@ -81,9 +84,14 @@ def WeightedEdge_Create(datadict):
 
     return final_lst
 
-a = WeightedEdge_Create(c)
-print(a)
+a = WeightedEdge_Create(user_data)
+#print(a)
 
+
+G = {}
+
+def create_adjlst(G):
+    pass
 
 name=input('Your name?')
 def GetMeADuo(a,name):
