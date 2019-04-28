@@ -1,5 +1,5 @@
 #bookfilename=input('Enter the excel file name here (csv) for the book data file.')
-bookfilename='Booklist.csv'
+bookfilename='"C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
 def openbookfile(name):
     import csv
     with open(name) as csv_file:
@@ -45,7 +45,7 @@ def userdataload(name):
             bookdict2[x[0]]=final
         return bookdict2
 
-datafile='Userdata.csv'
+datafile= 'C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
 user_data=userdataload(datafile)
 
 
@@ -84,16 +84,20 @@ def WeightedEdge_Create(datadict):
 
     return final_lst
 
-a = WeightedEdge_Create(user_data)
-#print(a)
+edge_list = WeightedEdge_Create(user_data)
+#print(edge_list)
 
 
 G = {}
 
 def create_adjlst(G):
-    pass
+    addNodes(G, user_data.keys())
+    addEdges(G,edge_list)
+    return
 
-name=input('Your name?')
+create_adjlst(G)
+
+#name=input('Your name?')
 def GetMeADuo(a,name):
     Final=[]
     for x in a:
@@ -108,5 +112,5 @@ def GetMeADuo(a,name):
     for x in Final:
         print(x)
     return Final
-b=GetMeADuo(a,name)
+#b=GetMeADuo(edge_list,name)
 
