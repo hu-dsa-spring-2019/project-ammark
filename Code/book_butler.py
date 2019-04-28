@@ -10,39 +10,40 @@ def openbookfile(name):
             for z in y:
                 d+=(z,)
             F.append(d)
-            d=tuple()   #After this, csv file is stored in a list of nested lists.
+            d=tuple()
         bookdict={}
-        for x in F:     #Used to create a dictionary of desired format.
+        for x in F:   
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
     return bookdict
-
-    
-def WeightedEdge_Create(datadict):
-    final_lst=[]
-    alrdy_traversed = [] 
-    for person in datadict.keys():
-        alrdy_traversed.append(person)
-        books_read=datadict[person]
-        for neighbor in datadict.keys():
-            weight=0
-            if neighbor in alrdy_traversed:
-                continue
-            for n_books in datadict[neighbor].keys():
-                if n_books in books_read.keys():
-                    currentchoice=books_read[n_books]
-                    neighborchoice=datadict[neighbor][n_books]
-                    if currentchoice==neighborchoice:
-                        weight+=2
-                    else:
-                        weight+=1
-            final_lst.append((person, neighbor, weight))
-
-    return final_lst
-
+##print(openbookfile(bookfilename))
 def addNodes(G, nodes):
     for item in nodes:
         G.update({item : []})
     return
+Userdata='Userdata.csv'
+def userdataload(name):
+    import csv
+    with open(name) as csv_file:
+        x=csv.reader(csv_file)
+        d=tuple()
+        F=[]
+        for y in x:
+            for z in y:
+                d+=(z,)
+            F.append(d)
+            d=tuple()   
+        bookdict2={}
+        for x in F:    
+            final={}
+            for y in range(len(x)):
+                if y!=0:
+                    M=x[y].split(',')
+                    o=M[1]
+                    final[M[0]]=eval(o)
+            bookdict2[x[0]]=final
+        return bookdict2
+c=userdataload(Userdata)
+
 
 
 def addEdges(G, edges, directed=False):
@@ -58,8 +59,46 @@ def addEdges(G, edges, directed=False):
                     break
     return
 
-G = {'A':{1: True, 2:True, 5: False},
-'B':{2:False, 1: False, 5:False}
-}
-a = WeightedEdge_Create(G)
+def WeightedEdge_Create(datadict):
+    final_lst=[]
+    alrdy_traversed = [] 
+    for person in datadict.keys():
+        alrdy_traversed.append(person)
+        books_read=datadict[person]
+        for neighbor in datadict.keys():
+            weight=0
+            if neighbor in alrdy_traversed:
+                continue
+            for n_books in datadict[neighbor].keys():
+                if n_books in books_read.keys():
+                    currentchoice=books_read[n_books]
+                    neighborchoice=datadict[neighbor][n_books]
+                    if currentchoice==neighborchoice:
+                        weight+=1
+                    else:
+                        weight-=1
+            final_lst.append((person, neighbor, weight))
+
+    return final_lst
+
+a = WeightedEdge_Create(c)
 print(a)
+
+
+name=input('Your name?')
+def GetMeADuo(a,name):
+    Final=[]
+    for x in a:
+        if x[0]==name and x[2]>0:
+            Final.append(x[1])
+        elif x[1]==name and x[2]>0:
+            Final.append(x[0])
+    if Final==[]:
+        print('You have no matches :c')
+    else:    
+        print('You should start hanging out with,')
+    for x in Final:
+        print(x)
+    return Final
+b=GetMeADuo(a,name)
+
