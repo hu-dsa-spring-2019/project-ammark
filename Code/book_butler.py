@@ -1,5 +1,6 @@
 #bookfilename=input('Enter the excel file name here (csv) for the book data file.')
-bookfilename='"C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
+##bookfilename='"C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
+bookfilename='Booklist.csv'
 def openbookfile(name):
     import csv
     with open(name) as csv_file:
@@ -15,7 +16,7 @@ def openbookfile(name):
         for x in F:   
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
     return bookdict
-##print(openbookfile(bookfilename))
+book_data=openbookfile(bookfilename)
 
 def addNodes(G, nodes):
     for item in nodes:
@@ -44,8 +45,8 @@ def userdataload(name):
                     final[M[0]]=eval(o)
             bookdict2[x[0]]=final
         return bookdict2
-
-datafile= 'C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
+datafile='Userdata.csv'
+##datafile= 'C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
 user_data=userdataload(datafile)
 
 
@@ -85,7 +86,7 @@ def WeightedEdge_Create(datadict):
     return final_lst
 
 edge_list = WeightedEdge_Create(user_data)
-#print(edge_list)
+##print(edge_list)
 
 
 G = {}
@@ -96,8 +97,8 @@ def create_adjlst(G):
     return
 
 create_adjlst(G)
-
-#name=input('Your name?')
+##print(G)
+name=input('Your name?')
 def GetMeADuo(a,name):
     Final=[]
     for x in a:
@@ -112,5 +113,21 @@ def GetMeADuo(a,name):
     for x in Final:
         print(x)
     return Final
-#b=GetMeADuo(edge_list,name)
+b=GetMeADuo(edge_list,name)
 
+def recommend_genre(bookdata,name,c):
+    userbooks=c[name]
+    for x,y in userbooks.items():
+        if y==True:
+            genre=bookdata[x][0]
+            author=bookdata[x][1]
+            price=bookdata[x][2]
+            rec=[]
+            for gen in genre:
+                for i,j in bookdata.items():
+                    if gen in j[0] and i not in rec and i!=x:
+                        rec.append(i)
+            print('because you have read '+str(x)+' and liked it,we recommend you to read: ')
+            for x in rec:
+                print(x)
+recommend_genre(book_data,name,user_data)
