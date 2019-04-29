@@ -103,15 +103,16 @@ name=input('Your name?')
 def GetMeADuo(G,name):
     Final=[]
     a=G[name]
+    t=0
     for x in a:
-        if x[1]>0:
+        if x[1]>t:
             Final.append(x[0])
+            t=x[1]
     if Final==[]:
-        print('You have no matches :c')
-    else:    
-        print('You should start hanging out with,')
-    for x in Final:
-        print(x)
+        print('You have no match :c')
+    else:
+        print('Your highest duo score is with ',end='')
+    print(Final[0]+'.')
     return Final
 b=GetMeADuo(G,name)
 
@@ -131,9 +132,6 @@ def recommend_genre(bookdata,name,c):
             for x in rec:
                 print(x[0],' at the price ',x[1])
 recommend_genre(book_data,name,user_data)
-
-
-
 
 
 
