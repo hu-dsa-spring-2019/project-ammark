@@ -97,14 +97,14 @@ def create_adjlst(G):
     return
 
 create_adjlst(G)
-##print(G)
+
 name=input('Your name?')
-def GetMeADuo(a,name):
+
+def GetMeADuo(G,name):
     Final=[]
+    a=G[name]
     for x in a:
-        if x[0]==name and x[2]>0:
-            Final.append(x[1])
-        elif x[1]==name and x[2]>0:
+        if x[1]>0:
             Final.append(x[0])
     if Final==[]:
         print('You have no matches :c')
@@ -113,7 +113,7 @@ def GetMeADuo(a,name):
     for x in Final:
         print(x)
     return Final
-b=GetMeADuo(edge_list,name)
+b=GetMeADuo(G,name)
 
 def recommend_genre(bookdata,name,c):
     userbooks=c[name]
@@ -126,8 +126,42 @@ def recommend_genre(bookdata,name,c):
             for gen in genre:
                 for i,j in bookdata.items():
                     if gen in j[0] and i not in rec and i!=x:
-                        rec.append(i)
+                        rec.append((i,j[2]))
             print('because you have read '+str(x)+' and liked it,we recommend you to read: ')
             for x in rec:
-                print(x)
+                print(x[0],' at the price ',x[1])
 recommend_genre(book_data,name,user_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
