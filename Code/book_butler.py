@@ -102,7 +102,7 @@ def create_adjlst(G):
 
 create_adjlst(G)
 
-name=input('Your name?')
+#name=input('Your name?')
 
 def GetMeADuo(G,name):
     Final=[]
@@ -120,7 +120,9 @@ def GetMeADuo(G,name):
     return Final
 #b=GetMeADuo(G,name)
 
+genre_output = ''
 def recommend_genre(bookdata,name,c):
+    global genre_output
     userbooks=c[name]
     for x,y in userbooks.items():
         if y==True:
@@ -135,6 +137,7 @@ def recommend_genre(bookdata,name,c):
             print('because you have read '+str(x)+' and liked it,we recommend you to read: ')
             for x in rec:
                 print(x[0],' at the price ',x[1])
+    genre_output = rec
 #recommend_genre(book_data,name,user_data)
 
 def top_picks(G, name):
@@ -166,15 +169,21 @@ def top_picks(G, name):
 
     return recommendation
 
+top_picks_display = ''
+
 def show_top_picks(G, name, book_data):    
-    picks = top_picks(G, 'Ammar Khan')
+    global top_picks_display
+    top_picks_display = ''
+    picks = top_picks(G, name)
     output = []
     for entry in picks:
         output.append((entry, book_data[entry]))
     
-    return output
+    top_picks_display = output
 
 def display_main():
+    global G
+    global book_data
     window1 = Tk()
     window1.title('Book Butler')
 
@@ -184,25 +193,36 @@ def display_main():
     outputframe = LabelFrame(window1, width = 500, height = 200)
     outputframe.pack()
 
-    Entry1 = Entry(inputframe, bd = 3)
-    Entry1.place(relx = 0.5, rely = 0.2)
+    text_prompt = Label(inputframe, text = 'Enter your name:')
+    text_prompt.place(relx = 0.2, rely= 0.2, anchor = 'center')
+    
+    Entry1 = Entry(inputframe, bd = 3, width = 25)
+    Entry1.place(relx = 0.5, rely = 0.2, anchor = 'center')
+    
 
-    Addbutton = Button(inputframe, text = 'Add a new user')
+    Addbutton = Button(inputframe, text = 'Add a new user', anchor = 'center')
     Addbutton.place(relx = 0.2, rely = 0.5)
 
-    Bytaste_button = Button(inputframe, text = 'Top Picks for You')
-    Bytaste_button.place(relx = 0.5, rely = 0.5)
+    Bytaste_button = Button(inputframe, text = 'Top Picks for You', anchor = 'center', command=lambda: show_top_picks(G, Entry1.get(), book_data))
+    Bytaste_button.place(relx = 0.4, rely = 0.5)
 
-    Bygenre_button = Button(inputframe, text = 'Books of similar genre')
-    Bygenre_button.place(relx = 0.8, rely = 0.5)
+    Bygenre_button = Button(inputframe, text = 'Books of similar genre',anchor = 'center', command = lambda: recommend_genre(book_data, Entry1.get(), user_data))
+    Bygenre_button.place(relx = 0.63, rely = 0.5)
     
-    Output_txt = Label()
-    
-    
-    
+    textout1 = StringVar()
+    textout2 = StringVar()
+
+    toppicklabel = Label(outputframe, text= '123')
+    toppicklabel.place(relx = 0.2, rely = 0.4, anchor = 'center')
+    topgenrelabel = Label(outputframe, text= '555')
+    topgenrelabel.place(relx = 0.6, rely = 0.4, anchor = 'center')
+
+    toppicklabel.configure(text=top_picks_display)
+    topgenrelabel.configure(text=genre_output)
+
     window1.mainloop()
-
-show_top_picks(G, name, book_data)
+#show_top_picks(G, name, book_data)
+display_main()
 
 
 
