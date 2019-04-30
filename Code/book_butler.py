@@ -20,6 +20,7 @@ def openbookfile(name):
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
     return bookdict
 book_data=openbookfile(bookfilename)
+##print(book_data) 
 
 def addNodes(G, nodes):
     for item in nodes:
@@ -39,19 +40,20 @@ def userdataload(name):
             F.append(d)
             d=tuple()   
         bookdict2={}
-        for x in F:    
-            final={}
-            for y in range(len(x)):
-                if y!=0:
-                    M=x[y].split(',')
-                    o=M[1]
-                    final[M[0]]=eval(o)
-            bookdict2[x[0]]=final
+        for x in F:
+            if x!=():
+                final={}
+                for y in range(len(x)):
+                    if y!=0:
+                        M=x[y].split(',')
+                        o=M[1]
+                        final[M[0]]=eval(o)
+                bookdict2[x[0]]=final
         return bookdict2
 datafile='Userdata.csv'
 ##datafile= 'C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
 user_data=userdataload(datafile)
-
+##print(user_data)
 
 def addEdges(G, edges, directed=False):
     for i in range(len(edges)):
@@ -221,13 +223,20 @@ def display_main():
     topgenrelabel.configure(text=genre_output)
 
     window1.mainloop()
-#show_top_picks(G, name, book_data)
-display_main()
-
-
-
-
-
+new_entry=eval(input('Do you want a new membership for the library? True/False.'))
+if new_entry==True:
+    new_user_name=input('Enter name of the new member.')
+    p=eval(input('Enter name of atleast 4 books you have read from the library, in the form of list, and with book name, type True if you .'))
+    new_user_data=[new_user_name]
+    for x in p:
+        new_user_data.append(x)
+    def New_User(datafile,new_user_data):
+        import csv
+        with open(datafile, 'a') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow(new_user_data)
+        csvFile.close()
+    New_User(datafile,new_user_data)
 
 
 
