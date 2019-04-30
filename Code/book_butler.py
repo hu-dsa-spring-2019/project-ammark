@@ -1,3 +1,6 @@
+from tkinter import *
+
+
 #bookfilename=input('Enter the excel file name here (csv) for the book data file.')
 ##bookfilename='"C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
 bookfilename='Booklist.csv'
@@ -81,7 +84,8 @@ def WeightedEdge_Create(datadict):
                         weight+=1
                     else:
                         weight-=1
-            final_lst.append((person, neighbor, weight))
+            if weight != 0:
+                final_lst.append((person, neighbor, weight))
 
     return final_lst
 
@@ -114,7 +118,7 @@ def GetMeADuo(G,name):
         print('Your highest duo score is with ',end='')
     print(Final[0]+'.')
     return Final
-b=GetMeADuo(G,name)
+#b=GetMeADuo(G,name)
 
 def recommend_genre(bookdata,name,c):
     userbooks=c[name]
@@ -131,7 +135,103 @@ def recommend_genre(bookdata,name,c):
             print('because you have read '+str(x)+' and liked it,we recommend you to read: ')
             for x in rec:
                 print(x[0],' at the price ',x[1])
-recommend_genre(book_data,name,user_data)
+#recommend_genre(book_data,name,user_data)
+
+def top_picks(G, name):
+    global user_data
+    links = G[name]
+    counter = 0
+    toplist = []                          #list maintained to track best edges
+    
+    while counter <2:
+        maxval = 0
+        max_index = None
+        for person in range(len(links)):
+            if links[person][1] > maxval:
+                maxval = links[person][1]
+                max_index = person
+        if max_index:
+            toplist.append(links.pop(max_index)[0])
+            counter +=1
+        else:
+            break
+    
+    recommendation = []
+    
+    for connection in toplist:
+        read_books = user_data[connection]
+        for book in read_books.keys():
+            if book not in user_data[name].keys() and read_books[book]:
+                recommendation.append(book)
+
+    return recommendation
+
+def show_top_picks(G, name, book_data):    
+    picks = top_picks(G, 'Ammar Khan')
+    output = []
+    for entry in picks:
+        output.append((entry, book_data[entry]))
+    
+    return output
+
+def display_main():
+    window1 = Tk()
+    window1.title('Book Butler')
+
+    inputframe = LabelFrame(window1, width = 500, height = 300)
+    inputframe.pack()
+
+    outputframe = LabelFrame(window1, width = 500, height = 200)
+    outputframe.pack()
+
+    Entry1 = Entry(inputframe, bd = 3)
+    Entry1.place(relx = 0.5, rely = 0.2)
+
+    Addbutton = Button(inputframe, text = 'Add a new user')
+    Addbutton.place(relx = 0.2, rely = 0.5)
+
+    Bytaste_button = Button(inputframe, text = 'Top Picks for You')
+    Bytaste_button.place(relx = 0.5, rely = 0.5)
+
+    Bygenre_button = Button(inputframe, text = 'Books of similar genre')
+    Bygenre_button.place(relx = 0.8, rely = 0.5)
+    
+    Output_txt = Label()
+    
+    
+    
+    window1.mainloop()
+
+show_top_picks(G, name, book_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
