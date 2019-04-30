@@ -118,7 +118,7 @@ def GetMeADuo(G,name):
         print('You have no match :c')
     else:
         print('Your highest duo score is with ',end='')
-    print(Final[0]+'.')
+    print(Final[-1]+'.')
     return Final
 #b=GetMeADuo(G,name)
 
