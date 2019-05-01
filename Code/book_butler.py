@@ -1,7 +1,6 @@
 from tkinter import *
 
 
-#bookfilename=input('Enter the excel file name here (csv) for the book data file.')
 bookfilename='C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
 #bookfilename='Booklist.csv'
 def openbookfile(name):
@@ -125,7 +124,11 @@ def GetMeADuo(G,name):
 genre_output = ''
 def recommend_genre(bookdata,name,c):
     global genre_output
-    userbooks=c[name]
+    try:
+        userbooks=c[name]
+    except:
+        genre_output = 'User record not found!'
+        return
     for x,y in userbooks.items():
         if y==True:
             genre=bookdata[x][0]
@@ -176,11 +179,13 @@ top_picks_display = ''
 def show_top_picks(G, name, book_data):    
     global top_picks_display
     top_picks_display = ''
-    picks = top_picks(G, name)
-    output = []
-    for entry in picks:
-        top_picks_display+= entry+'\t Genres: '+str(', '.join(book_data[entry][0]))+'\n'
-    
+    try:
+        picks = top_picks(G, name)
+        for entry in picks:
+            top_picks_display+= entry+'\t Genres: '+str(', '.join(book_data[entry][0]))+'\n'
+    except:
+        top_picks_display = 'User record not found!'
+        return
 
     
 
@@ -235,7 +240,7 @@ def display_main():
     window1.mainloop()
 
 
-def display_add(name):
+def display_add(pass_name):
     global window1
     window1.destroy()
     window2 = Tk()
@@ -258,33 +263,66 @@ def display_add(name):
     book5 = Entry(frame1, bd = 2, width = 25)
     book5.place(relx = 0.3, rely = 0.7)
 
-    label1 = Label(frame1, text = 'Enter book #1 title: ')
+    label1 = Label(frame1, text = 'Enter title for book #1: ')
     label1.place(relx = 0.1, rely = 0.1)
 
-    label2 = Label(frame1, text = 'Enter book #1 title: ')
+    label2 = Label(frame1, text = 'Enter title for book #2: ')
     label2.place(relx = 0.1, rely = 0.25)
 
-    label3 = Label(frame1, text = 'Enter book #1 title: ')
+    label3 = Label(frame1, text = 'Enter title for book #3: ')
     label3.place(relx = 0.1, rely = 0.4)
 
-    label4 = Label(frame1, text = 'Enter book #1 title: ')
+    label4 = Label(frame1, text = 'Enter title for book #4: ')
     label4.place(relx = 0.1, rely = 0.55)
 
-    label5 = Label(frame1, text = 'Enter book #1 title: ')
+    label5 = Label(frame1, text = 'Enter title for book #5: ')
     label5.place(relx = 0.1, rely = 0.7)
 
-    liked1 = Listbox(frame1, selectmode = 'Single', height = 2)
-    liked1.insert(0, 'Liked')
-    liked1.insert(1, 'Disliked')
-    liked1.place(relx = 0.6, rely = 0.1)
+
+    preflabel1 = Label(frame1, text = 'Liked? ')
+    preflabel1.place(relx = 0.6, rely = 0.1)
+
+    preflabel2 = Label(frame1, text = 'Liked? ')
+    preflabel2.place(relx = 0.6, rely = 0.25)
+
+    preflabel3 = Label(frame1, text = 'Liked? ')
+    preflabel3.place(relx = 0.6, rely = 0.4)
+
+    preflabel4 = Label(frame1, text = 'Liked? ')
+    preflabel4.place(relx = 0.6, rely = 0.55)
+
+    preflabel5 = Label(frame1, text = 'Liked? ')
+    preflabel5.place(relx = 0.6, rely = 0.7)
+
+    pref1 = Entry(frame1, bd = 2, width = 10)
+    pref1.place(relx = 0.7, rely = 0.1)
+
+    pref2 = Entry(frame1, bd = 2, width = 10)
+    pref2.place(relx = 0.7, rely = 0.25)
+
+    pref3 = Entry(frame1, bd = 2, width = 10)
+    pref3.place(relx = 0.7, rely = 0.4)
+
+    pref4 = Entry(frame1, bd = 2, width = 10)
+    pref4.place(relx = 0.7, rely = 0.55)
+
+    pref5 = Entry(frame1, bd = 2, width = 10)
+    pref5.place(relx = 0.7, rely = 0.7)
+
+    def save():
+        addbooklst = [book1.get()+','+pref1.get(), book2.get()+','+pref2.get(), book3.get()+','+pref3.get(), book4.get()+','+pref4.get(), book5.get()+','+pref5.get()]
+        addusername = pass_name
+        Add_to_records(datafile, addusername, addbooklst)
+        window2.destroy()
+
+    submitbutton = Button(frame1, text = 'Submit', anchor = 'center', command = save)
+    submitbutton.place(relx = 0.3, rely = 0.8)
 
 new_user_data=[]
-def save_new_entries(user_name, ):
+def save_new_entries(user_name, user_books):
     global new_user_data
-    new_user_name=input('Enter name of the new member.')
-    new_user_books=eval(input('Enter the books you have read from the library, in the form of list, and with book name, type True if you liked it, else False.'))
-    new_user_data=[new_user_name]
-    for x in new_user_books:
+    new_user_data=[user_name]
+    for x in user_books:
         new_user_data.append(x)
 
 
@@ -298,13 +336,12 @@ def New_User(datafile,new_user_data):  #datafile is the Userdata.csv file
 
 
 
-def Add_to_records(datafile):
+def Add_to_records(datafile, user_name, user_books):
     global new_user_data
-    save_new_entries()
-    choice=input('Do you want to save all new entries into the records? Yes/No')
-    if choice=='Yes':
-        New_User(datafile,new_user_data)
-#Add_to_records(datafile)
+    save_new_entries(user_name, user_books)
+    New_User(datafile,new_user_data)
+
+#Add_to_records(datafile, 'Test', ['test1,True', 'test2,False'])
 
 display_main()
 
