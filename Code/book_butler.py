@@ -2,8 +2,8 @@ from tkinter import *
 
 
 #bookfilename=input('Enter the excel file name here (csv) for the book data file.')
-##bookfilename='"C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
-bookfilename='Booklist.csv'
+bookfilename='C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
+#bookfilename='Booklist.csv'
 def openbookfile(name):
     import csv
     with open(name) as csv_file:
@@ -50,8 +50,8 @@ def userdataload(name):
                         final[M[0]]=eval(o)
                 bookdict2[x[0]]=final
         return bookdict2
-datafile='Userdata.csv'
-##datafile= 'C:\\Users\\Sony_i3\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
+#datafile='Userdata.csv'
+datafile= 'C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
 user_data=userdataload(datafile)
 ##print(user_data)
 
@@ -136,10 +136,10 @@ def recommend_genre(bookdata,name,c):
                 for i,j in bookdata.items():
                     if gen in j[0] and i not in rec and i!=x:
                         rec.append((i,j[2]))
-            print('because you have read '+str(x)+' and liked it,we recommend you to read: ')
+            
             for x in rec:
-                print(x[0],' at the price ',x[1])
-    genre_output = rec
+                genre_output+= x[0] + ' for $' + x[1] + '\n'
+    return                
 #recommend_genre(book_data,name,user_data)
 
 def top_picks(G, name):
@@ -179,24 +179,36 @@ def show_top_picks(G, name, book_data):
     picks = top_picks(G, name)
     output = []
     for entry in picks:
-        output.append((entry, book_data[entry]))
+        top_picks_display+= entry+'\t Genres: '+str(', '.join(book_data[entry][0]))+'\n'
     
-    top_picks_display = output
 
+    
 
+#show_top_picks(G, name ,book_data)
 
 def display_main():
     global G
     global book_data
+    global window1
     window1 = Tk()
     window1.title('Book Butler')
 
-    inputframe = LabelFrame(window1, width = 500, height = 300)
+    inputframe = LabelFrame(window1, width = 650, height = 300)
     inputframe.pack()
 
-    outputframe = LabelFrame(window1, width = 500, height = 200)
+    outputframe = LabelFrame(window1, width = 650, height = 500)
     outputframe.pack()
 
+
+    def call_toppick(G, name, book_data):
+        show_top_picks(G, name, book_data)
+        toppicklabel.configure(text=top_picks_display)
+
+    def call_genre(book_data, name, user_data):
+        recommend_genre(book_data, name, user_data)
+        topgenrelabel.configure(text=genre_output)
+
+        
     text_prompt = Label(inputframe, text = 'Enter your name:')
     text_prompt.place(relx = 0.2, rely= 0.2, anchor = 'center')
     
@@ -204,30 +216,70 @@ def display_main():
     Entry1.place(relx = 0.5, rely = 0.2, anchor = 'center')
     
 
-    Addbutton = Button(inputframe, text = 'Add a new user', anchor = 'center')
+    Addbutton = Button(inputframe, text = 'Add a new user', anchor = 'center', command = lambda: display_add(Entry1.get()))
     Addbutton.place(relx = 0.2, rely = 0.5)
 
-    Bytaste_button = Button(inputframe, text = 'Top Picks for You', anchor = 'center', command=lambda: show_top_picks(G, Entry1.get(), book_data))
+    Bytaste_button = Button(inputframe, text = 'Top Picks for You', anchor = 'center', command=lambda: call_toppick(G, Entry1.get(), book_data))
     Bytaste_button.place(relx = 0.4, rely = 0.5)
 
-    Bygenre_button = Button(inputframe, text = 'Books of similar genre',anchor = 'center', command = lambda: recommend_genre(book_data, Entry1.get(), user_data))
+    Bygenre_button = Button(inputframe, text = 'Books of similar genre',anchor = 'center', command = lambda: call_genre(book_data, Entry1.get(), user_data))
     Bygenre_button.place(relx = 0.63, rely = 0.5)
+
+    toppicklabel = Label(outputframe, text= '')
+    toppicklabel.place(relx = 0.5, rely = 0.1, anchor = 'center')
     
-    textout1 = StringVar()
-    textout2 = StringVar()
+    topgenrelabel = Label(outputframe, text= '')
+    topgenrelabel.place(relx = 0.5, rely = 0.6, anchor = 'center')
 
-    toppicklabel = Label(outputframe, text= '123')
-    toppicklabel.place(relx = 0.2, rely = 0.4, anchor = 'center')
-    topgenrelabel = Label(outputframe, text= '555')
-    topgenrelabel.place(relx = 0.6, rely = 0.4, anchor = 'center')
-
-    toppicklabel.configure(text=top_picks_display)
-    topgenrelabel.configure(text=genre_output)
 
     window1.mainloop()
-##display_main()
+
+
+def display_add(name):
+    global window1
+    window1.destroy()
+    window2 = Tk()
+
+    frame1 = Frame(window2, width = 650, height = 350)
+    frame1.pack()
+    
+    book1 = Entry(frame1, bd = 2, width = 25)
+    book1.place(relx = 0.3, rely = 0.1)
+
+    book2 = Entry(frame1, bd = 2, width = 25)
+    book2.place(relx = 0.3, rely = 0.25)
+
+    book3 = Entry(frame1, bd = 2, width = 25)
+    book3.place(relx = 0.3, rely = 0.4)
+
+    book4 = Entry(frame1, bd = 2, width = 25)
+    book4.place(relx = 0.3, rely = 0.55)
+
+    book5 = Entry(frame1, bd = 2, width = 25)
+    book5.place(relx = 0.3, rely = 0.7)
+
+    label1 = Label(frame1, text = 'Enter book #1 title: ')
+    label1.place(relx = 0.1, rely = 0.1)
+
+    label2 = Label(frame1, text = 'Enter book #1 title: ')
+    label2.place(relx = 0.1, rely = 0.25)
+
+    label3 = Label(frame1, text = 'Enter book #1 title: ')
+    label3.place(relx = 0.1, rely = 0.4)
+
+    label4 = Label(frame1, text = 'Enter book #1 title: ')
+    label4.place(relx = 0.1, rely = 0.55)
+
+    label5 = Label(frame1, text = 'Enter book #1 title: ')
+    label5.place(relx = 0.1, rely = 0.7)
+
+    liked1 = Listbox(frame1, selectmode = 'Single', height = 2)
+    liked1.insert(0, 'Liked')
+    liked1.insert(1, 'Disliked')
+    liked1.place(relx = 0.6, rely = 0.1)
+
 new_user_data=[]
-def save_new_entries():
+def save_new_entries(user_name, ):
     global new_user_data
     new_user_name=input('Enter name of the new member.')
     new_user_books=eval(input('Enter the books you have read from the library, in the form of list, and with book name, type True if you liked it, else False.'))
@@ -249,12 +301,12 @@ def New_User(datafile,new_user_data):  #datafile is the Userdata.csv file
 def Add_to_records(datafile):
     global new_user_data
     save_new_entries()
-    choice=input('Do you want to save all new enteries into the records? Yes/No')
+    choice=input('Do you want to save all new entries into the records? Yes/No')
     if choice=='Yes':
         New_User(datafile,new_user_data)
-Add_to_records(datafile)
+#Add_to_records(datafile)
 
-
+display_main()
 
 
 
