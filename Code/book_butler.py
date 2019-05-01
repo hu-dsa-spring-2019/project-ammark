@@ -183,6 +183,8 @@ def show_top_picks(G, name, book_data):
     
     top_picks_display = output
 
+
+
 def display_main():
     global G
     global book_data
@@ -223,21 +225,34 @@ def display_main():
     topgenrelabel.configure(text=genre_output)
 
     window1.mainloop()
-new_entry=eval(input('Do you want a new membership for the library? True/False.'))
-if new_entry==True:
+##display_main()
+new_user_data=[]
+def save_new_entries():
+    global new_user_data
     new_user_name=input('Enter name of the new member.')
-    p=eval(input('Enter name of atleast 4 books you have read from the library, in the form of list, and with book name, type True if you .'))
+    new_user_books=eval(input('Enter the books you have read from the library, in the form of list, and with book name, type True if you liked it, else False.'))
     new_user_data=[new_user_name]
-    for x in p:
+    for x in new_user_books:
         new_user_data.append(x)
-    def New_User(datafile,new_user_data):
-        import csv
-        with open(datafile, 'a') as csvFile:
-            writer = csv.writer(csvFile)
-            writer.writerow(new_user_data)
-        csvFile.close()
-    New_User(datafile,new_user_data)
 
+
+#we will use the function, save_new_entries via GUI and the use the function, Add_to_records to save every new record from save_new_entry into the Userdata.csv file.       
+def New_User(datafile,new_user_data):  #datafile is the Userdata.csv file
+    import csv
+    with open(datafile, 'a') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerow(new_user_data)
+##New_User(datafile,new_user_data)
+
+
+
+def Add_to_records(datafile):
+    global new_user_data
+    save_new_entries()
+    choice=input('Do you want to save all new enteries into the records? Yes/No')
+    if choice=='Yes':
+        New_User(datafile,new_user_data)
+Add_to_records(datafile)
 
 
 
