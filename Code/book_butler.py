@@ -1,8 +1,8 @@
 from tkinter import *
 
 
-bookfilename='C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
-#bookfilename='Booklist.csv'
+#bookfilename='C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Booklist.csv'
+bookfilename='Booklist.csv'
 def openbookfile(name):
     import csv
     with open(name) as csv_file:
@@ -19,7 +19,6 @@ def openbookfile(name):
             bookdict[x[0]]=[x[2].split(','),x[1],x[3]]
     return bookdict
 book_data=openbookfile(bookfilename)
-##print(book_data) 
 
 def addNodes(G, nodes):
     for item in nodes:
@@ -49,10 +48,9 @@ def userdataload(name):
                         final[M[0]]=eval(o)
                 bookdict2[x[0]]=final
         return bookdict2
-#datafile='Userdata.csv'
-datafile= 'C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
+datafile='Userdata.csv'
+#datafile= 'C:\\Users\\Salman\\Documents\\GitHub\\project-ammark\\Code\\Userdata.csv'
 user_data=userdataload(datafile)
-##print(user_data)
 
 def addEdges(G, edges, directed=False):
     for i in range(len(edges)):
@@ -317,6 +315,8 @@ def display_add(pass_name):
 
     submitbutton = Button(frame1, text = 'Submit', anchor = 'center', command = save)
     submitbutton.place(relx = 0.3, rely = 0.8)
+
+    window2.mainloop()
 
 new_user_data=[]
 def save_new_entries(user_name, user_books):
