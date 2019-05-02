@@ -10,8 +10,7 @@ def openbookfile(name):
         d=tuple()
         F=[]
         for y in x:
-            for z in y:
-                d+=(z,)
+            d = tuple(y)
             F.append(d)
             d=tuple()
         bookdict={}
@@ -33,8 +32,7 @@ def userdataload(name):
         d=tuple()
         F=[]
         for y in x:
-            for z in y:
-                d+=(z,)
+            d = tuple(y)
             F.append(d)
             d=tuple()   
         bookdict2={}
@@ -42,6 +40,7 @@ def userdataload(name):
             if x!=():
                 final={}
                 for y in range(len(x)):
+                    if x[y] == '': break
                     if y!=0:
                         M=x[y].split(',')
                         o=M[1]
@@ -100,7 +99,6 @@ def create_adjlst(G):
     return
 
 create_adjlst(G)
-
 #name=input('Your name?')
 
 def GetMeADuo(G,name):
@@ -127,19 +125,24 @@ def recommend_genre(bookdata,name,c):
     except:
         genre_output = 'User record not found!'
         return
+    rec=[]
     for x,y in userbooks.items():
         if y==True:
             genre=bookdata[x][0]
             author=bookdata[x][1]
             price=bookdata[x][2]
-            rec=[]
+##            rec=[]
             for gen in genre:
                 for i,j in bookdata.items():
                     if gen in j[0] and i not in rec and i!=x:
                         rec.append((i,j[2]))
-            
-            for x in rec:
-                genre_output+= x[0] + ' for $' + x[1] + '\n'
+    rec2=[]      
+    for x in rec:
+        if x not in rec2:
+            rec2.append(x)
+##    print(rec2)
+    for x in rec2:
+        genre_output+= x[0] + ' for $' + x[1] + '\n'
     return                
 #recommend_genre(book_data,name,user_data)
 
@@ -156,7 +159,7 @@ def top_picks(G, name):
             if links[person][1] > maxval:
                 maxval = links[person][1]
                 max_index = person
-        if max_index:
+        if max_index != None:
             toplist.append(links.pop(max_index)[0])
             counter +=1
         else:
@@ -167,7 +170,7 @@ def top_picks(G, name):
     for connection in toplist:
         read_books = user_data[connection]
         for book in read_books.keys():
-            if book not in user_data[name].keys() and read_books[book]:
+            if book not in user_data[name].keys() and read_books[book] and book not in recommendation:
                 recommendation.append(book)
 
     return recommendation
