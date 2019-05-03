@@ -116,7 +116,7 @@ def GetMeADuo(G,name):
     print(Final[-1]+'.')
     return Final
 #b=GetMeADuo(G,name)
-
+print(user_data)
 genre_output = ''
 def recommend_genre(bookdata,name,c):
     global genre_output
@@ -214,6 +214,11 @@ def display_main():
         recommend_genre(book_data, name, user_data)
         topgenrelabel.configure(text=genre_output)
 
+    def add_new(name):
+        if name in user_data.keys():
+            return
+        else:
+            display_add(name)
         
     text_prompt = Label(inputframe, text = 'Enter your name:')
     text_prompt.place(relx = 0.2, rely= 0.2, anchor = 'center')
@@ -222,13 +227,13 @@ def display_main():
     Entry1.place(relx = 0.5, rely = 0.2, anchor = 'center')
     
 
-    Addbutton = Button(inputframe, text = 'Add a new user', anchor = 'center', command = lambda: display_add(Entry1.get()))
+    Addbutton = Button(inputframe, text = 'Add a new user', anchor = 'center', command = lambda: add_new(Entry1.get()))
     Addbutton.place(relx = 0.2, rely = 0.5)
 
     Bytaste_button = Button(inputframe, text = 'Top Picks for You', anchor = 'center', command=lambda: call_toppick(G, Entry1.get(), book_data))
     Bytaste_button.place(relx = 0.4, rely = 0.5)
 
-    Bygenre_button = Button(inputframe, text = 'Books of similar genre',anchor = 'center', command = lambda: call_genre(book_data, Entry1.get(), user_data))
+    Bygenre_button = Button(inputframe, text = 'Books of your favorite genre',anchor = 'center', command = lambda: call_genre(book_data, Entry1.get(), user_data))
     Bygenre_button.place(relx = 0.63, rely = 0.5)
 
     toppicklabel = Label(outputframe, text= '')
@@ -341,61 +346,11 @@ def New_User(datafile,new_user_data):  #datafile is the Userdata.csv file
 
 def Add_to_records(datafile, user_name, user_books):
     global new_user_data
+    if user_name in user_data.keys():
+        return
     save_new_entries(user_name, user_books)
     New_User(datafile,new_user_data)
 
 #Add_to_records(datafile, 'Test', ['test1,True', 'test2,False'])
 
 display_main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
